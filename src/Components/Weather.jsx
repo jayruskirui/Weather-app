@@ -36,6 +36,12 @@ const Weather = () => {
   }
 
   const search = async (city) => {
+    if(city=== ''){
+      alert('Enter a City Name');
+             return;
+    }
+     
+
     try{
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`
 
@@ -51,12 +57,13 @@ const Weather = () => {
         icon: icon
       });
     }catch(error){
-
+      setWeatherData(false);
+      console.error('Error fetching weather data:');
     }
   }
 
     useEffect(() => {
-      search('Nairobi');
+      search('');
     }, [])
 
 
@@ -66,6 +73,7 @@ const Weather = () => {
           <input ref={inputRef} type="text" placeholder='Search' />
           <img src={search_icon} alt="" onClick={() => search(inputRef.current.value)} />
         </div>
+        {weatherData ? <>
         <img src={weatherData.icon} alt="Clear" className='weather-icon' />
         <p className='temperature'>{weatherData.temperature}°C</p>
         <p className='location'>{weatherData.location}</p>
@@ -85,6 +93,7 @@ const Weather = () => {
             </div>
           </div>
         </div>
+        </> : <></>}
     </div>
   )
 }
